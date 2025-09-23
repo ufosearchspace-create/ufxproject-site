@@ -1,6 +1,9 @@
 export const metadata = {
   title: "UFX – Decentralized UFO Investigation Network",
-  description: "Official site for UFX: Decentralized UFO Investigation Network",
+  description: "Official site for UFX",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {
