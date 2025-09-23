@@ -2,7 +2,7 @@ import "./globals.css";
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full flex flex-col items-center justify-center text-center p-6">
+    <main className="starfield min-h-screen w-full flex flex-col items-center justify-center text-center p-6">
       {/* Logo */}
       <img
         src="/logo.png"
