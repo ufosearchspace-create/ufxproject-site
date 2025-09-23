@@ -5,18 +5,7 @@ export default function Home() {
     <main
       className="min-h-screen w-full flex flex-col items-center justify-center text-center p-6"
       style={{
-        background: "radial-gradient(circle at center, #0a0f1c 0%, #000000 100%)",
-        backgroundAttachment: "fixed",
-        backgroundImage: `
-          radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6) 100%, transparent 0),
-          radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.4) 100%, transparent 0),
-          radial-gradient(1.5px 1.5px at 70% 20%, rgba(255,255,255,0.5) 100%, transparent 0),
-          radial-gradient(2px 2px at 80% 70%, rgba(255,255,255,0.6) 100%, transparent 0),
-          radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.3) 100%, transparent 0),
-          radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,0.4) 100%, transparent 0)
-        `,
-        backgroundRepeat: "repeat",
-        backgroundSize: "800px 800px",
+        backgroundColor: "#0a0f1c", // ista boja kao pozadina loga
       }}
     >
       {/* Logo */}
@@ -49,7 +38,7 @@ export default function Home() {
         </a>
 
         <a
-          href="https://https://x.com/UFX_Project"
+          href="https://x.com/ufx_project"
           target="_blank"
           className="px-5 py-3 bg-black/70 text-cyan-300 rounded-xl font-semibold hover:bg-black/90 transition"
         >
