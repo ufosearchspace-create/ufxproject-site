@@ -1,12 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
   font-family: sans-serif;
 
+  /* pozadina gradijent + zvjezdice */
   background: radial-gradient(circle at center, #0d1b2a 0%, #000000 100%);
-
-  /* zvjezdice */
   background-image: radial-gradient(2px 2px at 20px 30px, #ffffff55 100%, transparent 0),
                     radial-gradient(1px 1px at 40px 60px, #ffffff44 100%, transparent 0),
                     radial-gradient(1.5px 1.5px at 100px 150px, #ffffff33 100%, transparent 0),
