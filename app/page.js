@@ -49,7 +49,7 @@ export default function Home() {
         </a>
 
         <a
-          href="https://x.com/ufxproject"
+          href="https://https://x.com/UFX_Project"
           target="_blank"
           className="px-5 py-3 bg-black/70 text-cyan-300 rounded-xl font-semibold hover:bg-black/90 transition"
         >
