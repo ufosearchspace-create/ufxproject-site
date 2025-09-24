@@ -23,7 +23,7 @@ export default function Home() {
       {/* Buttons */}
       <div className="mt-8 flex flex-wrap justify-center gap-4">
         <a
-          href="https://pump.fun"
+          href="https://pump.fun/coin/Ch8rHHEwBBLczBwRpGqw6Yvzv4YpvPThGXcs2Z1Tpump"
           target="_blank"
           className="px-5 py-3 bg-cyan-400 text-black rounded-xl font-semibold hover:bg-cyan-300 transition"
         >
