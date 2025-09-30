@@ -31,7 +31,8 @@ export default async function handler(req, res) {
           location: `${city}, ${state}`,
           latitude: null,
           longitude: null,
-          date_event: date_event || null,
+          date_event:
+            Date.parse(date_event) ? new Date(date_event).toISOString() : null,
           reporter_type: "dataset_import",
           source: "NUFORC_HTML",
           ai_verdict: "unknown",
