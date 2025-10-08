@@ -1,60 +1,23 @@
-import { createClient } from "@supabase/supabase-js";
-import * as cheerio from "cheerio";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+// pages/api/import.js
+import { importNUFORC } from "../../lib/import/nuforc.js";
+import path from "path";
 
 export default async function handler(req, res) {
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   try {
-    // 1. Fetch NUFORC HTML
-    const response = await fetch("https://nuforc.org/subndx/?id=all");
-    const html = await response.text();
+    console.log("🚀 Import NUFORC started...");
 
-    // 2. Parse HTML tablice
-    const $ = cheerio.load(html);
-    const allRows = [];
+    // Putanja do CSV-a (scrubbed.csv koji si uploadirao u projekt)
+    const filePath = path.join(process.cwd(), "scrubbed.csv");
 
-    $("table tr").each((i, row) => {
-      const cells = $(row).find("td");
-      if (cells.length >= 5) {
-        const date_event = $(cells[0]).text().trim();
-        const city = $(cells[1]).text().trim();
-        const state = $(cells[2]).text().trim();
-        const shape = $(cells[3]).text().trim();
-        const summary = $(cells[4]).text().trim();
+    await importNUFORC(filePath);
 
-        allRows.push({
-          external_id: `${date_event}_${city}_${state}_${i}`,
-          description: `${shape ? `[${shape}] ` : ""}${summary}`,
-          location: `${city}, ${state}`,
-          latitude: null,
-          longitude: null,
-          date_event:
-            Date.parse(date_event) ? new Date(date_event).toISOString() : null,
-          reporter_type: "dataset_import",
-          source: "NUFORC_HTML",
-          ai_verdict: "unknown",
-          confidence_score: 0,
-          status: "verified",
-        });
-      }
-    });
-
-    // 3. Uzmi samo zadnjih 100 prijava
-    const rows = allRows.slice(0, 100);
-
-    // 4. Ubaci u Supabase (deduplikacija po external_id)
-    const { error } = await supabase.from("reports").upsert(rows, {
-      onConflict: "external_id",
-    });
-
-    if (error) throw error;
-
-    return res.status(200).json({ success: true, inserted: rows.length });
+    res.status(200).json({ message: "NUFORC import complete" });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, error: err.message });
+    console.error("❌ Import error:", err);
+    res.status(500).json({ error: err.message });
   }
 }

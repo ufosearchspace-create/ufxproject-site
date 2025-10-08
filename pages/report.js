@@ -81,7 +81,6 @@ export default function Report() {
     <div className="min-h-screen bg-space-900 text-white p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-center">Latest UFO Reports</h1>
-        <h2 className="text-center text-red-400">TEST BUILD</h2>
 
         {loading ? (
           <p className="text-center text-gray-400">Loading reports...</p>
