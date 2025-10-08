@@ -50,7 +50,7 @@ export default async function handler(req, res) {
         await supabase
           .from("reports")
           .update({ latitude: lat, longitude: lng })
-          .eq("id", report.id);
+          .eq("id", report.id); 
 
         updatedCount++;
       } catch (err) {
