@@ -1,5 +1,4 @@
-// pages/api/geocode.js
-
+@"
 export default function handler(req, res) {
   const now = new Date().toISOString();
   console.log("✅ Cron ran at:", now);
@@ -9,3 +8,4 @@ export default function handler(req, res) {
     timestamp: now
   });
 }
+"@ | Out-File -Encoding utf8 pages\api\geocode.js
