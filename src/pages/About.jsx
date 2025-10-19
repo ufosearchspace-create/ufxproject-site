@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Users, Globe, Zap, Shield, Heart } from 'lucide-react';
+import { Target, Users, Globe, Zap, Shield, Heart, Twitter } from 'lucide-react';
 
 const About = () => {
   return (
@@ -70,22 +70,21 @@ const About = () => {
           <h2 className="text-4xl font-bold text-center mb-8 text-gray-900">Our Story</h2>
           <div className="space-y-6 text-gray-700 leading-relaxed">
             <p>
-              UFX Network was born out of frustration with the current state of UFO research. 
-              For decades, sighting data has been scattered across countless websites, 
-              government databases, and personal archives—often lost, manipulated, or 
-              inaccessible to researchers.
+              UFX Network was born out of a passion for aerospace and a desire to bring 
+              transparency to UFO research. For decades, sighting data has been scattered 
+              across countless websites, government databases, and personal archives—often 
+              lost, manipulated, or inaccessible to researchers.
             </p>
             <p>
-              In 2024, our founder—a former aerospace engineer and blockchain developer—realized 
-              that distributed ledger technology could solve this problem. By storing sighting 
-              data on the blockchain, we could create an immutable, censorship-resistant record 
-              that would outlast any single organization or government.
+              In 2024, I realized that blockchain technology could solve this problem. 
+              By storing sighting data on distributed ledgers, we could create an immutable, 
+              censorship-resistant record that would outlast any single organization or government.
             </p>
             <p>
               We launched in Q4 2025 with over 60,000 historical sightings and a mission: 
-              to build the largest, most credible UFO database in human history. Today, 
-              thousands of users contribute sightings daily, earning rewards for their 
-              participation in this global effort.
+              to build the largest, most credible UFO database in human history. The platform 
+              continues to grow, with the goal of creating a community-driven resource that 
+              advances our understanding of aerial phenomena.
             </p>
             <p className="font-semibold text-ufx-primary">
               Together, we're not just documenting the unknown—we're building the future 
@@ -133,8 +132,8 @@ const About = () => {
               <div>
                 <h3 className="font-bold text-xl mb-2 text-gray-900">Integrity</h3>
                 <p className="text-gray-600">
-                  We prioritize data accuracy and authenticity. Our AI verification system 
-                  filters out hoaxes while protecting genuine witnesses.
+                  We prioritize data accuracy and authenticity. Our verification systems 
+                  help filter questionable reports while protecting genuine witnesses.
                 </p>
               </div>
             </div>
@@ -146,8 +145,8 @@ const About = () => {
               <div>
                 <h3 className="font-bold text-xl mb-2 text-gray-900">Accessibility</h3>
                 <p className="text-gray-600">
-                  Our platform is free to use for everyone. Token rewards make it possible 
-                  for anyone to earn while contributing.
+                  Our platform is free to use for everyone. We believe UFO research should 
+                  be accessible to all.
                 </p>
               </div>
             </div>
@@ -155,36 +154,34 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Developer Section */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">Meet the Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <div className="w-32 h-32 bg-gradient-to-r from-ufx-primary to-ufx-secondary rounded-full mx-auto mb-4"></div>
-              <h3 className="font-bold text-xl mb-1 text-gray-900">John Doe</h3>
-              <p className="text-ufx-primary font-semibold mb-2">Founder & CEO</p>
-              <p className="text-sm text-gray-600">
-                Former NASA engineer with 15+ years in aerospace and blockchain development.
-              </p>
-            </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center mb-12 text-gray-900">The Developer</h2>
+          <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+            <div className="flex flex-col items-center">
+              <div className="w-40 h-40 bg-gradient-to-r from-ufx-primary to-ufx-secondary rounded-full mb-6"></div>
+              <h3 className="font-bold text-2xl mb-2 text-gray-900">Regular Joe</h3>
+              <p className="text-ufx-primary font-semibold mb-4">Founder & Solo Developer</p>
+              
+              <div className="text-center mb-6">
+                <p className="text-gray-700 mb-4 leading-relaxed">
+                  Master's degree in Aeronautics and former military pilot with a passion 
+                  for aerospace technology and transparency in UFO research. Currently building 
+                  UFX Network as a solo developer, combining expertise in aviation, blockchain, 
+                  and web development.
+                </p>
+              </div>
 
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <div className="w-32 h-32 bg-gradient-to-r from-ufx-primary to-ufx-secondary rounded-full mx-auto mb-4"></div>
-              <h3 className="font-bold text-xl mb-1 text-gray-900">Jane Smith</h3>
-              <p className="text-ufx-primary font-semibold mb-2">CTO</p>
-              <p className="text-sm text-gray-600">
-                AI/ML specialist who built verification systems for major tech companies.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
-              <div className="w-32 h-32 bg-gradient-to-r from-ufx-primary to-ufx-secondary rounded-full mx-auto mb-4"></div>
-              <h3 className="font-bold text-xl mb-1 text-gray-900">Mike Johnson</h3>
-              <p className="text-ufx-primary font-semibold mb-2">Head of Research</p>
-              <p className="text-sm text-gray-600">
-                PhD in Astrophysics, published over 50 papers on aerial phenomena.
-              </p>
+              <a 
+                href="https://x.com/ptah_ai" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all"
+              >
+                <Twitter size={20} />
+                Follow on X @ptah_ai
+              </a>
             </div>
           </div>
         </div>
@@ -201,9 +198,14 @@ const About = () => {
             <button className="bg-white text-ufx-primary px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all">
               🚀 Get Started
             </button>
-            <button className="bg-transparent border-2 border-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-ufx-primary transition-all">
+            <a 
+              href="https://x.com/ptah_ai" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-transparent border-2 border-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-ufx-primary transition-all"
+            >
               📧 Contact Us
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -211,4 +213,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About;
