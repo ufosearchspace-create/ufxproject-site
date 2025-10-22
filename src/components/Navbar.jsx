@@ -55,7 +55,6 @@ const Navbar = ({
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity">
-              {/* Tvoj custom logo */}
               <img 
                 src="/logo.png" 
                 alt="UFX Network" 
@@ -68,7 +67,7 @@ const Navbar = ({
                      textShadow: '0 2px 4px rgba(0,0,0,0.4)',
                      letterSpacing: '0.1em'
                    }}>
-                  UFO Sightings Database
+                  AI-Powered UAP Research
                 </p>
               </div>
             </Link>
@@ -122,7 +121,7 @@ const Navbar = ({
                         {isDevAccess && <span className="ml-2 bg-yellow-400 text-black px-2 py-0.5 rounded text-xs font-bold">DEV</span>}
                       </div>
                       <div className="text-xs opacity-75">
-                        {hasAccess ? '✅ Access' : '🔒 Need 1M'}
+                        {hasAccess ? '✅ Access' : '🔒 Need 1M'} • Base
                       </div>
                     </div>
                   </div>
@@ -159,7 +158,7 @@ const Navbar = ({
               >
                 <Wallet size={18} />
                 <span className="text-sm">
-                  {walletConnected ? formatAddress(walletAddress) : 'Connect Wallet'}
+                  {walletConnected ? formatAddress(walletAddress) : 'Connect (Base)'}
                 </span>
               </button>
 
@@ -173,7 +172,7 @@ const Navbar = ({
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                 </svg>
-                <span className="text-sm">Follow Us</span>
+                <span className="text-sm">Follow</span>
               </a>
             </div>
 
@@ -211,7 +210,7 @@ const Navbar = ({
                     <div>
                       <div className="font-bold">{formatBalance(tokenBalance)} UFX</div>
                       <div className="text-xs opacity-75">
-                        {hasAccess ? '✅ Full Access' : '🔒 Need 1M for access'}
+                        {hasAccess ? '✅ Full Access' : '🔒 Need 1M for access'} • Base Chain
                       </div>
                     </div>
                     <Coins size={20} />
@@ -267,7 +266,7 @@ const Navbar = ({
               >
                 <Wallet size={18} />
                 <span className="text-sm">
-                  {walletConnected ? formatAddress(walletAddress) : 'Connect Wallet'}
+                  {walletConnected ? formatAddress(walletAddress) : 'Connect Wallet (Base)'}
                 </span>
               </button>
             </div>
