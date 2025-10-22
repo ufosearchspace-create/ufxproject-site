@@ -5,49 +5,12 @@ import SearchPanel from '../components/SearchPanel';
 import StatsDashboard from '../components/StatsDashboard';
 import DetailModal from '../components/DetailModal';
 import CameraModal from '../components/CameraModal';
-import AccessControlModal from '../components/AccessControlModal';
 
-const MapView = ({ hasAccess }) => {
+const MapView = () => {
   const [filters, setFilters] = useState({});
   const [selectedSighting, setSelectedSighting] = useState(null);
   const [selectedCamera, setSelectedCamera] = useState(null);
-  const [showAccessModal, setShowAccessModal] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  // Provjeri pristup prije učitavanja
-  React.useEffect(() => {
-    if (!hasAccess) {
-      setShowAccessModal(true);
-    }
-  }, [hasAccess]);
-
-  if (!hasAccess) {
-    return (
-      <>
-        <div className="h-screen flex items-center justify-center bg-gray-100">
-          <div className="text-center max-w-2xl px-4">
-            <div className="text-6xl mb-4">🔒🗺️</div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Premium Feature</h2>
-            <p className="text-gray-600 text-lg mb-6">
-              Access to the Interactive Map requires payment. Explore 160,000+ UFO sightings worldwide!
-            </p>
-            <button
-              onClick={() => setShowAccessModal(true)}
-              className="bg-ufx-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-all"
-            >
-              Unlock Access
-            </button>
-          </div>
-        </div>
-        {showAccessModal && (
-          <AccessControlModal 
-            onClose={() => setShowAccessModal(false)} 
-            requiredFeature="Interactive Map"
-          />
-        )}
-      </>
-    );
-  }
 
   return (
     <div className="h-screen flex flex-col relative overflow-hidden">
