@@ -1,375 +1,344 @@
 import React, { useState } from 'react';
-import { Upload, MapPin, Calendar, Clock, FileText, Camera, Send } from 'lucide-react';
-import AccessControlModal from '../components/AccessControlModal';
+import { Camera, MapPin, Calendar, Clock, Upload, CheckCircle } from 'lucide-react';
 
-const SubmitSighting = ({ hasAccess }) => {
-  const [showAccessModal, setShowAccessModal] = useState(false);
+const SubmitSighting = () => {
   const [formData, setFormData] = useState({
-    datetime: '',
+    date: '',
+    time: '',
+    location: '',
     city: '',
-    state: '',
     country: '',
     shape: '',
     duration: '',
     description: '',
-    latitude: '',
-    longitude: ''
+    email: '',
+    photos: []
   });
-  const [images, setImages] = useState([]);
-  const [submitting, setSubmitting] = useState(false);
 
-  // Access Control Check
-  React.useEffect(() => {
-    if (!hasAccess) {
-      setShowAccessModal(true);
-    }
-  }, [hasAccess]);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  if (!hasAccess) {
-    return (
-      <>
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center max-w-2xl px-4">
-            <div className="text-6xl mb-4">🔒🛸</div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Premium Feature</h2>
-            <p className="text-gray-600 text-lg mb-6">
-              Submit UFO sightings and earn tokens! This feature requires payment.
-            </p>
-            <button
-              onClick={() => setShowAccessModal(true)}
-              className="bg-ufx-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-all"
-            >
-              Unlock Submissions
-            </button>
-          </div>
-        </div>
-        {showAccessModal && (
-          <AccessControlModal 
-            onClose={() => setShowAccessModal(false)} 
-            requiredFeature="Sighting Submissions"
-          />
-        )}
-      </>
-    );
-  }
+  const shapes = [
+    'Circle', 'Triangle', 'Sphere', 'Disk', 'Cigar', 'Rectangle',
+    'Oval', 'Formation', 'Light', 'Fireball', 'Unknown', 'Other'
+  ];
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const newImages = files.map(file => ({
-      file,
-      preview: URL.createObjectURL(file)
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
     }));
-    setImages([...images, ...newImages]);
   };
 
-  const removeImage = (index) => {
-    const newImages = [...images];
-    URL.revokeObjectURL(newImages[index].preview);
-    newImages.splice(index, 1);
-    setImages(newImages);
+  const handleFileUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setFormData(prev => ({
+      ...prev,
+      photos: [...prev.photos, ...files]
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);
+    setLoading(true);
 
+    // TODO: Implement actual submission to backend/blockchain
     try {
-      const formDataToSend = new FormData();
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
-      });
-      images.forEach((img, index) => {
-        formDataToSend.append(`image${index}`, img.file);
-      });
-
-      const response = await fetch('https://ufx-backend.onrender.com/api/sightings', {
-        method: 'POST',
-        body: formDataToSend,
-      });
-
-      if (response.ok) {
-        alert('✅ Sighting submitted successfully! You will earn UFX tokens once verified.');
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      console.log('Sighting submitted:', formData);
+      setSubmitted(true);
+      
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setSubmitted(false);
         setFormData({
-          datetime: '',
+          date: '',
+          time: '',
+          location: '',
           city: '',
-          state: '',
           country: '',
           shape: '',
           duration: '',
           description: '',
-          latitude: '',
-          longitude: ''
+          email: '',
+          photos: []
         });
-        setImages([]);
-      } else {
-        alert('❌ Failed to submit sighting. Please try again.');
-      }
+      }, 3000);
     } catch (error) {
-      console.error('Error submitting sighting:', error);
-      alert('❌ Error submitting sighting. Please check your connection.');
+      console.error('Submission error:', error);
+      alert('Failed to submit sighting. Please try again.');
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
+  // Success Screen
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <CheckCircle className="mx-auto text-green-500 mb-4" size={80} />
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Sighting Submitted!
+          </h2>
+          <p className="text-gray-600 text-lg mb-6">
+            Thank you for contributing to the UFX Network. Your sighting will be reviewed 
+            and added to our database.
+          </p>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
+            💡 You'll receive a confirmation email once your sighting is verified.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <Upload className="text-ufx-primary" size={64} />
+            <Camera className="text-ufx-primary" size={64} />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Submit a UFO Sighting
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Submit UFO Sighting
           </h1>
-          <p className="text-xl text-gray-600">
-            Share your experience and earn UFX tokens for verified submissions
+          <p className="text-lg text-gray-600">
+            Share your UFO/UAP experience with the community. All submissions are 
+            verified and added to our blockchain database.
           </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Date & Time */}
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8 space-y-6">
+          {/* Date & Time */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <Calendar size={18} className="mr-2" />
-                Date & Time of Sighting *
+              <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                <Calendar className="mr-2" size={18} />
+                Date of Sighting *
               </label>
               <input
-                type="datetime-local"
-                name="datetime"
-                value={formData.datetime}
-                onChange={handleChange}
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleInputChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
               />
             </div>
 
-            {/* Location */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <MapPin size={18} className="mr-2" />
-                  City *
-                </label>
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                  placeholder="Phoenix"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                  State/Province *
-                </label>
-                <input
-                  type="text"
-                  name="state"
-                  value={formData.state}
-                  onChange={handleChange}
-                  required
-                  placeholder="AZ"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                  Country *
-                </label>
-                <input
-                  type="text"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                  required
-                  placeholder="USA"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
-                />
-              </div>
-            </div>
-
-            {/* Coordinates (Optional) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                  Latitude (Optional)
-                </label>
-                <input
-                  type="number"
-                  step="any"
-                  name="latitude"
-                  value={formData.latitude}
-                  onChange={handleChange}
-                  placeholder="33.4484"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">
-                  Longitude (Optional)
-                </label>
-                <input
-                  type="number"
-                  step="any"
-                  name="longitude"
-                  value={formData.longitude}
-                  onChange={handleChange}
-                  placeholder="-112.0740"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
-                />
-              </div>
-            </div>
-
-            {/* Shape */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                Shape/Appearance *
+              <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+                <Clock className="mr-2" size={18} />
+                Time *
+              </label>
+              <input
+                type="time"
+                name="time"
+                value={formData.time}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Location */}
+          <div>
+            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+              <MapPin className="mr-2" size={18} />
+              Location (Address or Coordinates) *
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              placeholder="e.g., 123 Main St or 40.7128° N, 74.0060° W"
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
+            />
+          </div>
+
+          {/* City & Country */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-semibold text-gray-700 mb-2 block">
+                City *
+              </label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleInputChange}
+                placeholder="e.g., Los Angeles"
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-gray-700 mb-2 block">
+                Country *
+              </label>
+              <input
+                type="text"
+                name="country"
+                value={formData.country}
+                onChange={handleInputChange}
+                placeholder="e.g., United States"
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Shape & Duration */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-semibold text-gray-700 mb-2 block">
+                Shape *
               </label>
               <select
                 name="shape"
                 value={formData.shape}
-                onChange={handleChange}
+                onChange={handleInputChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
               >
                 <option value="">Select shape...</option>
-                <option value="circle">Circle</option>
-                <option value="disk">Disk</option>
-                <option value="light">Light</option>
-                <option value="sphere">Sphere</option>
-                <option value="triangle">Triangle</option>
-                <option value="cigar">Cigar</option>
-                <option value="formation">Formation</option>
-                <option value="other">Other</option>
+                {shapes.map(shape => (
+                  <option key={shape} value={shape}>{shape}</option>
+                ))}
               </select>
             </div>
 
-            {/* Duration */}
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <Clock size={18} className="mr-2" />
+              <label className="text-sm font-semibold text-gray-700 mb-2 block">
                 Duration *
               </label>
               <input
                 type="text"
                 name="duration"
                 value={formData.duration}
-                onChange={handleChange}
+                onChange={handleInputChange}
+                placeholder="e.g., 5 minutes, 30 seconds"
                 required
-                placeholder="e.g., 2 minutes, 30 seconds"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
               />
             </div>
+          </div>
 
-            {/* Description */}
-            <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <FileText size={18} className="mr-2" />
-                Description *
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-                rows={6}
-                placeholder="Describe what you saw in detail..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
+          {/* Description */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+              Description *
+            </label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              placeholder="Describe what you saw in detail... (movement, color, behavior, etc.)"
+              required
+              rows="6"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent resize-none"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Be as detailed as possible. Include information about weather conditions, 
+              other witnesses, and any unusual effects.
+            </p>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700 mb-2 block">
+              Your Email (Optional)
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="your.email@example.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Optional: We'll send you a confirmation when your sighting is verified.
+            </p>
+          </div>
+
+          {/* Photo Upload */}
+          <div>
+            <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
+              <Upload className="mr-2" size={18} />
+              Photos/Videos (Optional)
+            </label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-ufx-primary transition-colors">
+              <input
+                type="file"
+                multiple
+                accept="image/*,video/*"
+                onChange={handleFileUpload}
+                className="hidden"
+                id="file-upload"
               />
-            </div>
-
-            {/* Image Upload */}
-            <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                <Camera size={18} className="mr-2" />
-                Upload Photos/Videos (Optional - Earn more tokens!)
+              <label
+                htmlFor="file-upload"
+                className="cursor-pointer flex flex-col items-center"
+              >
+                <Camera className="text-gray-400 mb-2" size={40} />
+                <span className="text-sm text-gray-600">
+                  Click to upload photos or videos
+                </span>
+                <span className="text-xs text-gray-400 mt-1">
+                  PNG, JPG, MP4 up to 10MB each
+                </span>
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-ufx-primary transition-all">
-                <input
-                  type="file"
-                  accept="image/*,video/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  className="hidden"
-                  id="file-upload"
-                />
-                <label
-                  htmlFor="file-upload"
-                  className="cursor-pointer flex flex-col items-center"
-                >
-                  <Upload className="text-gray-400 mb-2" size={48} />
-                  <span className="text-gray-600 font-medium">Click to upload files</span>
-                  <span className="text-sm text-gray-500 mt-1">
-                    PNG, JPG, MP4 up to 10MB
-                  </span>
-                </label>
-              </div>
-
-              {/* Image Previews */}
-              {images.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                  {images.map((img, index) => (
-                    <div key={index} className="relative group">
-                      <img
-                        src={img.preview}
-                        alt={`Preview ${index + 1}`}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
+              {formData.photos.length > 0 && (
+                <div className="mt-4 text-sm text-green-600">
+                  ✅ {formData.photos.length} file(s) selected
                 </div>
               )}
             </div>
+          </div>
 
-            {/* Reward Info */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="font-bold text-green-900 mb-2">💰 Earn Tokens!</h3>
-              <ul className="text-sm text-green-800 space-y-1">
-                <li>• 100 UFX for basic submission</li>
-                <li>• +50 UFX per photo/video</li>
-                <li>• +200 UFX if verified by AI</li>
-                <li>• +500 UFX if trending on social media</li>
-              </ul>
-            </div>
-
-            {/* Submit Button */}
+          {/* Submit Button */}
+          <div className="pt-4">
             <button
               type="submit"
-              disabled={submitting}
-              className="w-full bg-gradient-to-r from-ufx-primary to-ufx-secondary text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
+              disabled={loading}
+              className={`w-full py-4 rounded-lg font-bold text-lg transition-all ${
+                loading
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-ufx-primary hover:bg-blue-700 text-white shadow-lg'
+              }`}
             >
-              {submitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Submitting...</span>
-                </>
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Submitting...
+                </span>
               ) : (
-                <>
-                  <Send size={20} />
-                  <span>Submit Sighting</span>
-                </>
+                '📡 Submit Sighting'
               )}
             </button>
-          </form>
-        </div>
+          </div>
+
+          {/* Privacy Notice */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-xs text-gray-600">
+            <strong>Privacy Notice:</strong> Your submission will be stored on the blockchain 
+            for transparency and immutability. Personal information (email) is optional and 
+            stored securely. Anonymous submissions are welcome.
+          </div>
+        </form>
       </div>
     </div>
   );
