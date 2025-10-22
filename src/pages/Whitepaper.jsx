@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Target, Rocket, Users, Shield, TrendingUp } from 'lucide-react';
+import { FileText, Target, Rocket, Users, Shield, TrendingUp, Brain, BookOpen } from 'lucide-react';
 import ContactForm from '../components/ContactForm';
 
 const Whitepaper = () => {
@@ -17,7 +17,7 @@ const Whitepaper = () => {
             UFX Network Whitepaper
           </h1>
           <p className="text-xl text-gray-600">
-            Version 1.0 | Last Updated: October 2025
+            Version 2.0 | Last Updated: October 2025
           </p>
           <button 
             onClick={() => alert('📥 PDF download coming soon!')}
@@ -31,16 +31,15 @@ const Whitepaper = () => {
         <section className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <h2 className="text-3xl font-bold mb-4 text-gray-900">Executive Summary</h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            UFX Network is the world's first decentralized, blockchain-powered platform 
-            for documenting and analyzing UFO/UAP (Unidentified Aerial Phenomena) sightings. 
-            Our mission is to create a transparent, immutable, and community-driven database 
-            that empowers researchers, enthusiasts, and governments to collaborate on 
-            understanding these unexplained phenomena.
+            UFX Network is an AI-powered platform for analyzing Unidentified Aerial Phenomena (UAP) 
+            and decoding science fiction narratives. Our mission is to connect the dots between 
+            speculative fiction predictions and real-world technological and scientific discoveries, 
+            creating the world's most comprehensive blockchain-verified UAP database.
           </p>
           <p className="text-gray-700 leading-relaxed">
-            By leveraging blockchain technology, smart contracts, and a native utility token (UFX), 
-            we incentivize accurate reporting, ensure data integrity, and democratize access to 
-            one of humanity's greatest mysteries.
+            Built on Base blockchain and launching via Virtuals Protocol, UFX leverages advanced 
+            AI agents, smart contracts, and the native $UFX utility token to incentivize research, 
+            ensure data integrity, and democratize access to one of humanity's greatest mysteries.
           </p>
         </section>
 
@@ -51,8 +50,9 @@ const Whitepaper = () => {
             <div className="flex items-start space-x-3">
               <div className="text-red-500 mt-1">❌</div>
               <div>
-                <strong>Fragmented Data:</strong> UFO sightings are scattered across hundreds 
-                of websites, forums, and government databases with no standardization.
+                <strong>Fragmented Data:</strong> UAP sightings are scattered across hundreds 
+                of websites, forums, and government databases with no standardization or 
+                cross-referencing with sci-fi literature.
               </div>
             </div>
             <div className="flex items-start space-x-3">
@@ -65,15 +65,16 @@ const Whitepaper = () => {
             <div className="flex items-start space-x-3">
               <div className="text-red-500 mt-1">❌</div>
               <div>
-                <strong>No Incentive:</strong> Witnesses have no motivation to share detailed, 
-                verified reports beyond personal interest.
+                <strong>Missing Connections:</strong> Science fiction has predicted countless 
+                technologies and phenomena, but no system exists to systematically identify 
+                these connections with real-world events.
               </div>
             </div>
             <div className="flex items-start space-x-3">
               <div className="text-red-500 mt-1">❌</div>
               <div>
-                <strong>Poor Analytics:</strong> Existing platforms lack advanced tools for 
-                pattern recognition, hotspot detection, and predictive analysis.
+                <strong>Limited Analytics:</strong> Existing platforms lack AI-powered tools 
+                for pattern recognition, narrative analysis, and predictive modeling.
               </div>
             </div>
           </div>
@@ -83,13 +84,24 @@ const Whitepaper = () => {
         <section className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <h2 className="text-3xl font-bold mb-4 text-gray-900">Our Solution</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="border-l-4 border-purple-600 pl-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <Brain className="text-purple-600" size={24} />
+                <h3 className="font-bold text-lg">AI-Powered Analysis</h3>
+              </div>
+              <p className="text-gray-700 text-sm">
+                Advanced AI agents analyze UAP data, decode sci-fi narratives, 
+                and identify correlations between fiction and reality.
+              </p>
+            </div>
+
             <div className="border-l-4 border-ufx-primary pl-4">
               <div className="flex items-center space-x-2 mb-2">
                 <Shield className="text-ufx-primary" size={24} />
                 <h3 className="font-bold text-lg">Blockchain Security</h3>
               </div>
               <p className="text-gray-700 text-sm">
-                All sightings are timestamped and stored on Ethereum/Polygon, 
+                All sightings timestamped on Base blockchain via Virtuals Protocol, 
                 ensuring immutability and transparency.
               </p>
             </div>
@@ -100,8 +112,8 @@ const Whitepaper = () => {
                 <h3 className="font-bold text-lg">Token Incentives</h3>
               </div>
               <p className="text-gray-700 text-sm">
-                UFX token rewards users for submitting verified sightings, 
-                with bonuses for photos/videos.
+                $UFX token rewards users for submitting verified sightings and 
+                contributing to research efforts.
               </p>
             </div>
 
@@ -116,10 +128,21 @@ const Whitepaper = () => {
               </p>
             </div>
 
+            <div className="border-l-4 border-purple-600 pl-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <BookOpen className="text-purple-600" size={24} />
+                <h3 className="font-bold text-lg">Sci-Fi Integration</h3>
+              </div>
+              <p className="text-gray-700 text-sm">
+                AI analyzes decades of science fiction literature to identify 
+                predictions that align with UAP phenomena.
+              </p>
+            </div>
+
             <div className="border-l-4 border-ufx-primary pl-4">
               <div className="flex items-center space-x-2 mb-2">
                 <TrendingUp className="text-ufx-primary" size={24} />
-                <h3 className="font-bold text-lg">AI-Powered Analytics</h3>
+                <h3 className="font-bold text-lg">Predictive Analytics</h3>
               </div>
               <p className="text-gray-700 text-sm">
                 Machine learning algorithms detect patterns, predict hotspots, 
@@ -132,29 +155,89 @@ const Whitepaper = () => {
         {/* Tokenomics */}
         <section className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <h2 className="text-3xl font-bold mb-4 text-gray-900">Tokenomics</h2>
+          
+          {/* Visual Distribution */}
+          <div className="mb-6">
+            <div className="relative h-12 rounded-lg overflow-hidden flex">
+              <div className="bg-cyan-500" style={{ width: '44.58%' }} title="Liquidity Pool"></div>
+              <div className="bg-purple-500" style={{ width: '25%' }} title="Capital Formation"></div>
+              <div className="bg-green-500" style={{ width: '25%' }} title="Team"></div>
+              <div className="bg-yellow-400" style={{ width: '3%' }} title="Ecosystem Airdrop"></div>
+              <div className="bg-orange-500" style={{ width: '2%' }} title="veVIRTUAL Airdrop"></div>
+            </div>
+          </div>
+
           <div className="space-y-4">
             <div className="flex justify-between items-center border-b pb-3">
               <span className="font-semibold">Total Supply:</span>
               <span className="text-ufx-primary font-bold">1,000,000,000 UFX</span>
             </div>
             <div className="flex justify-between items-center border-b pb-3">
-              <span className="font-semibold">Team (Locked - 7%):</span>
-              <span>70,000,000 UFX</span>
+              <span className="font-semibold">Liquidity Pool:</span>
+              <span>445,800,000 UFX (44.58%)</span>
             </div>
             <div className="flex justify-between items-center border-b pb-3">
-              <span className="font-semibold">Public Sale (93%):</span>
-              <span>930,000,000 UFX</span>
+              <span className="font-semibold">Automated Capital Formation:</span>
+              <span>250,000,000 UFX (25%)</span>
+            </div>
+            <div className="flex justify-between items-center border-b pb-3">
+              <span className="font-semibold">Team (6-month vesting):</span>
+              <span>250,000,000 UFX (25%)</span>
+            </div>
+            <div className="flex justify-between items-center border-b pb-3">
+              <span className="font-semibold">Virtuals Ecosystem Airdrop:</span>
+              <span>30,000,000 UFX (3%)</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="font-semibold">All tokens available online</span>
-              <span className="text-green-600 font-bold">✅ Live</span>
+              <span className="font-semibold">veVIRTUAL Airdrop:</span>
+              <span>20,000,000 UFX (2%)</span>
             </div>
           </div>
+          
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
             <p className="text-sm text-blue-800">
-              💡 <strong>Note:</strong> No presale, no vesting periods. Buy anytime directly on our platform 
-              with crypto or fiat payment.
+              💡 <strong>Launch Details:</strong> $UFX launches on November 22, 2026 via Virtuals 
+              Protocol on Base blockchain. Team tokens vest over 6 months to ensure long-term commitment.
             </p>
+          </div>
+        </section>
+
+        {/* AI Agent Features */}
+        <section className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900">AI Agent Capabilities</h2>
+          <div className="space-y-4">
+            <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
+              <h3 className="font-bold text-lg mb-2 flex items-center">
+                <Brain className="mr-2 text-purple-600" size={20} />
+                UAP Data Analysis
+              </h3>
+              <p className="text-gray-700 text-sm">
+                Processes 60,000+ UAP sightings, identifying patterns, temporal clusters, 
+                geographical hotspots, and correlations with historical events.
+              </p>
+            </div>
+
+            <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
+              <h3 className="font-bold text-lg mb-2 flex items-center">
+                <BookOpen className="mr-2 text-purple-600" size={20} />
+                Sci-Fi Narrative Decoding
+              </h3>
+              <p className="text-gray-700 text-sm">
+                Analyzes decades of science fiction literature (Clarke, Asimov, Heinlein, Liu Cixin) 
+                to map predictions against documented UAP sightings and technological breakthroughs.
+              </p>
+            </div>
+
+            <div className="bg-purple-50 border-l-4 border-purple-600 p-4">
+              <h3 className="font-bold text-lg mb-2 flex items-center">
+                <Target className="mr-2 text-purple-600" size={20} />
+                Predictive Modeling
+              </h3>
+              <p className="text-gray-700 text-sm">
+                Uses machine learning to predict future UAP activity hotspots and identify 
+                emerging patterns that might indicate new phenomena.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -170,42 +253,43 @@ const Whitepaper = () => {
                 <li>Platform launch with 60,000+ sightings</li>
                 <li>Interactive map with clustering</li>
                 <li>User submission system</li>
-                <li>Token available for purchase (crypto & fiat)</li>
+                <li>AI agent prototype development</li>
               </ul>
             </div>
 
-            {/* Q1 2026 */}
+            {/* Q4 2026 */}
             <div className="relative pl-8 border-l-4 border-blue-500">
               <div className="absolute -left-3 top-0 w-6 h-6 bg-blue-500 rounded-full border-4 border-white"></div>
-              <h3 className="font-bold text-lg mb-2">Q1 2026 🚧 (IN PROGRESS)</h3>
+              <h3 className="font-bold text-lg mb-2">Q4 2026 🚧 (IN PROGRESS)</h3>
+              <ul className="list-disc list-inside text-gray-700 space-y-1">
+                <li>Token Generation Event (Nov 22, 2026)</li>
+                <li>Uniswap listing on Base</li>
+                <li>AI agent full deployment</li>
+                <li>Sci-fi narrative database integration</li>
+              </ul>
+            </div>
+
+            {/* Q1 2027 */}
+            <div className="relative pl-8 border-l-4 border-gray-300">
+              <div className="absolute -left-3 top-0 w-6 h-6 bg-gray-300 rounded-full border-4 border-white"></div>
+              <h3 className="font-bold text-lg mb-2">Q1 2027 📅 (PLANNED)</h3>
               <ul className="list-disc list-inside text-gray-700 space-y-1">
                 <li>Mobile app (iOS/Android)</li>
                 <li>Live camera network expansion</li>
-                <li>AI image verification</li>
+                <li>Advanced AI pattern recognition</li>
                 <li>Community governance launch</li>
               </ul>
             </div>
 
-            {/* Q2 2026 */}
+            {/* Q2-Q4 2027 */}
             <div className="relative pl-8 border-l-4 border-gray-300">
               <div className="absolute -left-3 top-0 w-6 h-6 bg-gray-300 rounded-full border-4 border-white"></div>
-              <h3 className="font-bold text-lg mb-2">Q2 2026 📅 (PLANNED)</h3>
+              <h3 className="font-bold text-lg mb-2">Q2-Q4 2027 🔮 (FUTURE)</h3>
               <ul className="list-disc list-inside text-gray-700 space-y-1">
-                <li>DEX listing (Uniswap, PancakeSwap)</li>
+                <li>Additional DEX & CEX listings</li>
                 <li>API marketplace launch</li>
                 <li>AR/VR sighting visualization</li>
-                <li>Government partnerships</li>
-              </ul>
-            </div>
-
-            {/* Q3-Q4 2026 */}
-            <div className="relative pl-8 border-l-4 border-gray-300">
-              <div className="absolute -left-3 top-0 w-6 h-6 bg-gray-300 rounded-full border-4 border-white"></div>
-              <h3 className="font-bold text-lg mb-2">Q3-Q4 2026 🔮 (FUTURE)</h3>
-              <ul className="list-disc list-inside text-gray-700 space-y-1">
-                <li>CEX listings (Binance, Coinbase)</li>
-                <li>NFT marketplace for verified sightings</li>
-                <li>Satellite integration</li>
+                <li>Research partnerships with institutions</li>
                 <li>Global expansion to 200+ countries</li>
               </ul>
             </div>
@@ -223,7 +307,9 @@ const Whitepaper = () => {
               <h3 className="font-bold text-xl mb-1 text-gray-900">Regular Joe</h3>
               <p className="text-ufx-primary font-semibold mb-2">Founder & Developer</p>
               <p className="text-sm text-gray-600 mb-3">
-                Building the future of decentralized UFO research
+                Master's degree in Aeronautics, former military pilot, and AI/blockchain developer. 
+                Building the future of decentralized UAP research with passion for science fiction 
+                and aerial phenomena.
               </p>
               <a 
                 href="https://x.com/ptah_ai" 
@@ -236,6 +322,29 @@ const Whitepaper = () => {
                 </svg>
                 <span>@ptah_ai</span>
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Technology Stack */}
+        <section className="bg-white rounded-lg shadow-lg p-8 mb-8">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900">Technology Stack</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-bold mb-2">Blockchain</h3>
+              <p className="text-sm text-gray-600">Base (Ethereum L2), Virtuals Protocol</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-bold mb-2">AI/ML</h3>
+              <p className="text-sm text-gray-600">Custom AI agents, NLP, Pattern recognition</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-bold mb-2">Frontend</h3>
+              <p className="text-sm text-gray-600">React, TypeScript, Tailwind CSS</p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="font-bold mb-2">Backend</h3>
+              <p className="text-sm text-gray-600">Node.js, PostgreSQL, Redis</p>
             </div>
           </div>
         </section>
