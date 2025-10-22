@@ -10,88 +10,50 @@ import SubmitSighting from './pages/SubmitSighting';
 import Cameras from './pages/Cameras';
 import Profile from './pages/Profile';
 import About from './pages/About';
-import { connectPhantomWallet, disconnectPhantomWallet, getTokenBalance } from './utils/solana';
-import { hasDevAccess } from './utils/whitelist';
 
 function App() {
   const [walletAddress, setWalletAddress] = useState(null);
-  const [userEmail, setUserEmail] = useState(null);
   const [tokenBalance, setTokenBalance] = useState(0);
-  const [hasAccess, setHasAccess] = useState(false);
-  const [isDevAccess, setIsDevAccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Check wallet on mount
   useEffect(() => {
     checkWalletConnection();
-    checkEmailLogin();
   }, []);
 
   // Update token balance when wallet changes
   useEffect(() => {
     if (walletAddress) {
       fetchTokenBalance();
-    } else if (userEmail) {
-      checkEmailAccess();
     } else {
       setTokenBalance(0);
-      setHasAccess(false);
-      setIsDevAccess(false);
     }
-  }, [walletAddress, userEmail]);
+  }, [walletAddress]);
 
   const checkWalletConnection = async () => {
     try {
-      if (window.solana && window.solana.isConnected) {
-        const publicKey = window.solana.publicKey.toString();
-        setWalletAddress(publicKey);
+      // Check for Ethereum wallet (MetaMask, Coinbase Wallet, etc.)
+      if (window.ethereum && window.ethereum.selectedAddress) {
+        setWalletAddress(window.ethereum.selectedAddress);
       }
     } catch (error) {
       console.error('Error checking wallet:', error);
     }
   };
 
-  const checkEmailLogin = () => {
-    const savedEmail = localStorage.getItem('ufx_user_email');
-    if (savedEmail) {
-      setUserEmail(savedEmail);
-    }
-  };
-
-  const checkEmailAccess = () => {
-    if (!userEmail) return;
-    
-    const devAccess = hasDevAccess(null, userEmail);
-    setIsDevAccess(devAccess);
-    setHasAccess(devAccess);
-    
-    if (devAccess) {
-      console.log('✅ Email whitelisted - access granted!');
-    }
-  };
-
   const fetchTokenBalance = async () => {
     if (!walletAddress) return;
     
-    // Prvo provjeri whitelist
-    const devAccess = hasDevAccess(walletAddress, null);
-    setIsDevAccess(devAccess);
-    
-    if (devAccess) {
-      console.log('🔓 Developer wallet access granted!');
-      setHasAccess(true);
-      setTokenBalance(0);
-      return;
-    }
-    
-    // Ako nije dev, provjeri token balance
     setLoading(true);
     try {
-      const balance = await getTokenBalance(walletAddress);
-      setTokenBalance(balance);
-      setHasAccess(balance >= 1000000);
+      // TODO: Implement Base network token balance check
+      // For now, set to 0 until contract is deployed
+      setTokenBalance(0);
+      
+      console.log('🔗 Wallet connected (Base network):', walletAddress);
     } catch (error) {
       console.error('Error fetching balance:', error);
+      setTokenBalance(0);
     } finally {
       setLoading(false);
     }
@@ -100,32 +62,61 @@ function App() {
   const handleWalletConnect = async () => {
     if (walletAddress) {
       // Disconnect
-      await disconnectPhantomWallet();
       setWalletAddress(null);
       setTokenBalance(0);
-      setHasAccess(false);
-      setIsDevAccess(false);
+      console.log('👋 Wallet disconnected');
     } else {
-      // Connect
-      const address = await connectPhantomWallet();
-      if (address) {
-        setWalletAddress(address);
+      // Connect to Base network via MetaMask/WalletConnect
+      try {
+        if (!window.ethereum) {
+          alert('Please install MetaMask or another Web3 wallet!');
+          return;
+        }
+
+        // Request account access
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        });
+
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
+          console.log('✅ Wallet connected:', accounts[0]);
+          
+          // Optional: Switch to Base network
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x2105' }], // Base mainnet chainId
+            });
+          } catch (switchError) {
+            // If Base network is not added, add it
+            if (switchError.code === 4902) {
+              try {
+                await window.ethereum.request({
+                  method: 'wallet_addEthereumChain',
+                  params: [{
+                    chainId: '0x2105',
+                    chainName: 'Base',
+                    nativeCurrency: {
+                      name: 'Ethereum',
+                      symbol: 'ETH',
+                      decimals: 18,
+                    },
+                    rpcUrls: ['https://mainnet.base.org'],
+                    blockExplorerUrls: ['https://basescan.org'],
+                  }],
+                });
+              } catch (addError) {
+                console.error('Error adding Base network:', addError);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error connecting wallet:', error);
+        alert('Failed to connect wallet. Please try again.');
       }
     }
-  };
-
-  const handleEmailLogin = (email, password) => {
-    // Spremi email u localStorage
-    localStorage.setItem('ufx_user_email', email);
-    setUserEmail(email);
-    console.log('📧 Email login:', email);
-  };
-
-  const handleEmailLogout = () => {
-    localStorage.removeItem('ufx_user_email');
-    setUserEmail(null);
-    setHasAccess(false);
-    setIsDevAccess(false);
   };
 
   return (
@@ -136,22 +127,17 @@ function App() {
           setWalletConnected={handleWalletConnect}
           walletAddress={walletAddress}
           tokenBalance={tokenBalance}
-          hasAccess={hasAccess}
-          isDevAccess={isDevAccess}
-          userEmail={userEmail}
-          onEmailLogin={handleEmailLogin}
-          onEmailLogout={handleEmailLogout}
         />
         
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/map" element={<MapView hasAccess={hasAccess} />} />
+            <Route path="/map" element={<MapView />} />
             <Route path="/token" element={<TokenPage />} />
             <Route path="/whitepaper" element={<Whitepaper />} />
-            <Route path="/submit" element={<SubmitSighting hasAccess={hasAccess} />} />
-            <Route path="/cameras" element={<Cameras hasAccess={hasAccess} />} />
-            <Route path="/profile" element={<Profile walletAddress={walletAddress} tokenBalance={tokenBalance} userEmail={userEmail} />} />
+            <Route path="/submit" element={<SubmitSighting />} />
+            <Route path="/cameras" element={<Cameras />} />
+            <Route path="/profile" element={<Profile walletAddress={walletAddress} tokenBalance={tokenBalance} />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
