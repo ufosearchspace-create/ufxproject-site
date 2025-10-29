@@ -365,6 +365,7 @@ if (filters.year_from || filters.year_to) {
     }
   };
 
+  
   return (
     <div className="relative h-full">
       {loading && (
