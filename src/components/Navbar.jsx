@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Wallet, Menu, X, Coins } from 'lucide-react';
+import { Wallet, Menu, X, Coins, CheckCircle, XCircle } from 'lucide-react';
+import { useAuthGate } from '../hooks/useAuthGate';
 
 const Navbar = ({ 
   walletConnected, 
@@ -10,6 +11,7 @@ const Navbar = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const location = useLocation();
+  const { allowed, loading: accessLoading } = useAuthGate(walletAddress);
 
   // Simple navigation links - NO LOCKS!
   const navLinks = [
@@ -75,6 +77,27 @@ const Navbar = ({
 
           {/* Right side buttons - WALLET ONLY, NO EMAIL LOGIN! */}
           <div className="hidden lg:flex items-center space-x-3">
+            {/* Access Status (only if wallet connected) */}
+            {walletConnected && !accessLoading && (
+              <div className={`px-3 py-2 rounded-lg text-xs font-medium flex items-center space-x-1 ${
+                allowed 
+                  ? 'bg-green-500 bg-opacity-20 text-green-100' 
+                  : 'bg-yellow-500 bg-opacity-20 text-yellow-100'
+              }`}>
+                {allowed ? (
+                  <>
+                    <CheckCircle size={14} />
+                    <span>Access Granted</span>
+                  </>
+                ) : (
+                  <>
+                    <XCircle size={14} />
+                    <span>Limited Access</span>
+                  </>
+                )}
+              </div>
+            )}
+
             {/* Wallet Info (only if connected) */}
             {walletConnected && tokenBalance > 0 && (
               <div className="bg-white bg-opacity-20 px-4 py-2 rounded-lg text-sm">
@@ -129,6 +152,24 @@ const Navbar = ({
         {/* Mobile menu - NO LOCKS! */}
         {mobileMenuOpen && (
           <div className="lg:hidden pb-4 space-y-2">
+            {/* Access Status Mobile (only if wallet connected) */}
+            {walletConnected && !accessLoading && (
+              <div className={`px-4 py-3 rounded-lg text-sm mb-2 flex items-center justify-between ${
+                allowed 
+                  ? 'bg-green-500 bg-opacity-20' 
+                  : 'bg-yellow-500 bg-opacity-20'
+              }`}>
+                <span className="font-medium">
+                  {allowed ? 'Access Granted' : 'Limited Access'}
+                </span>
+                {allowed ? (
+                  <CheckCircle size={18} />
+                ) : (
+                  <XCircle size={18} />
+                )}
+              </div>
+            )}
+
             {/* Wallet Info Mobile (only if connected) */}
             {walletConnected && tokenBalance > 0 && (
               <div className="bg-white bg-opacity-20 px-4 py-3 rounded-lg text-sm mb-2">

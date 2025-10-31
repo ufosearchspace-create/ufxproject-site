@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import MapView from './pages/MapView';
 import TokenPage from './pages/TokenPage';
@@ -132,12 +133,28 @@ function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/map" element={<MapView />} />
+            <Route path="/map" element={
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
+                <MapView />
+              </ProtectedRoute>
+            } />
             <Route path="/token" element={<TokenPage />} />
             <Route path="/whitepaper" element={<Whitepaper />} />
-            <Route path="/submit" element={<SubmitSighting />} />
-            <Route path="/cameras" element={<Cameras />} />
-            <Route path="/profile" element={<Profile walletAddress={walletAddress} tokenBalance={tokenBalance} />} />
+            <Route path="/submit" element={
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
+                <SubmitSighting />
+              </ProtectedRoute>
+            } />
+            <Route path="/cameras" element={
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
+                <Cameras />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
+                <Profile walletAddress={walletAddress} tokenBalance={tokenBalance} />
+              </ProtectedRoute>
+            } />
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
