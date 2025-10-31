@@ -6,11 +6,19 @@ export async function post(path, body) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+  }
   return res.json();
 }
 
 export async function get(path) {
   const res = await fetch(`${BASE}${path}`);
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+  }
   return res.json();
 }
 export default { get, post };
