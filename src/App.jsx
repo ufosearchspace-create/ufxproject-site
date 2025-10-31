@@ -134,24 +134,24 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/map" element={
-              <ProtectedRoute walletAddress={walletAddress}>
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
                 <MapView />
               </ProtectedRoute>
             } />
             <Route path="/token" element={<TokenPage />} />
             <Route path="/whitepaper" element={<Whitepaper />} />
             <Route path="/submit" element={
-              <ProtectedRoute walletAddress={walletAddress}>
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
                 <SubmitSighting />
               </ProtectedRoute>
             } />
             <Route path="/cameras" element={
-              <ProtectedRoute walletAddress={walletAddress}>
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
                 <Cameras />
               </ProtectedRoute>
             } />
             <Route path="/profile" element={
-              <ProtectedRoute walletAddress={walletAddress}>
+              <ProtectedRoute walletAddress={walletAddress} onConnectWallet={handleWalletConnect}>
                 <Profile walletAddress={walletAddress} tokenBalance={tokenBalance} />
               </ProtectedRoute>
             } />

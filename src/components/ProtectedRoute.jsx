@@ -6,7 +6,7 @@ import { AlertCircle, Lock, Loader2 } from 'lucide-react';
  * ProtectedRoute component that wraps protected pages
  * Shows loading state, access denied message, or renders children based on auth status
  */
-const ProtectedRoute = ({ children, walletAddress }) => {
+const ProtectedRoute = ({ children, walletAddress, onConnectWallet }) => {
   const { allowed, loading, error } = useAuthGate(walletAddress);
 
   // Loading state
@@ -52,9 +52,9 @@ const ProtectedRoute = ({ children, walletAddress }) => {
               ? 'Your wallet address does not have access to this feature. Please contact support or check if you need to hold UFX tokens.'
               : 'Please connect your wallet to access this feature.'}
           </p>
-          {!walletAddress && (
+          {!walletAddress && onConnectWallet && (
             <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              onClick={onConnectWallet}
               className="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
             >
               Connect Wallet

@@ -34,7 +34,8 @@ export function useAuthGate(walletAddress) {
         });
         
         if (isMounted) {
-          setAllowed(response.allowed === true);
+          // Response is already the JSON object from lib/api.js
+          setAllowed(response?.allowed === true);
           setLoading(false);
         }
       } catch (err) {
