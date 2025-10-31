@@ -30,7 +30,7 @@ export function useAuthGate(walletAddress) {
 
       try {
         const response = await api.post('/api/auth/check-access', {
-          walletAddress
+          address: walletAddress
         });
         
         if (isMounted) {
