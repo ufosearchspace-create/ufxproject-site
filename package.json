@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules dist package-lock.json",
+    "reinstall": "npm run clean && npm install"
   },
   "dependencies": {
     "@solana/wallet-adapter-base": "^0.9.27",
@@ -36,5 +38,13 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "vite": "^7.1.7"
+  },
+  "overrides": {
+    "@keystonehq/sdk": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    },
+    "qrcode.react": "^3.1.0",
+    "use-sync-external-store": "^1.2.2"
   }
 }
