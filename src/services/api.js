@@ -50,6 +50,9 @@ export const getSightingDetails = async (sightingId) => {
   }
 };
 
+// Alias za getSightingDetails (za kompatibilnost)
+export const getSightingById = getSightingDetails;
+
 export const getSightingsStats = async () => {
   try {
     // Pokušaj combined stats prvo
@@ -143,6 +146,9 @@ export const getCameraDetails = async (cameraId) => {
   }
 };
 
+// Alias za getCameraDetails (za kompatibilnost)
+export const getCameraById = getCameraDetails;
+
 // =====================
 // AUTH ENDPOINTS
 // =====================
@@ -194,6 +200,7 @@ export default {
   getSightings,
   getSightingsMap,
   getSightingDetails,
+  getSightingById,  // Alias
   getSightingsStats,
   submitReport,
   getReportDetails,
@@ -201,6 +208,7 @@ export default {
   getCameras,
   getCamerasNearby,
   getCameraDetails,
+  getCameraById,  // Alias
   checkAccess,
   searchSightings,
   getShapes
