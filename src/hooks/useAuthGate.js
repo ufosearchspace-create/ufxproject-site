@@ -34,6 +34,8 @@ export function useAuthGate(walletAddress) {
         const response = await api.post('/api/auth/check-access', {
           address: normalizedAddress
         });
+
+        console.log('Access check response:', response);
         
         console.log('Access check response:', response);
         
