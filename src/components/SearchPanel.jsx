@@ -10,7 +10,9 @@ const SearchPanel = ({ onFilterChange }) => {
     year_from: '',
     year_to: '',
     duration_min: '',
-    duration_max: ''
+    duration_max: '',
+    has_image: false,
+    has_description: false
   });
 
   const shapes = ['light', 'circle', 'triangle', 'fireball', 'sphere', 'disk', 'oval', 'other'];
@@ -32,7 +34,9 @@ const SearchPanel = ({ onFilterChange }) => {
       year_from: '',
       year_to: '',
       duration_min: '',
-      duration_max: ''
+      duration_max: '',
+      has_image: false,
+      has_description: false
     };
     setFilters(emptyFilters);
     if (onFilterChange) {
@@ -141,6 +145,30 @@ const SearchPanel = ({ onFilterChange }) => {
               placeholder="Max"
               className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ufx-primary focus:border-transparent"
             />
+          </div>
+        </div>
+
+        <div className="border-t pt-3">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Content Filters</label>
+          <div className="space-y-2">
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filters.has_image}
+                onChange={(e) => handleChange('has_image', e.target.checked)}
+                className="w-4 h-4 text-ufx-primary border-gray-300 rounded focus:ring-2 focus:ring-ufx-primary"
+              />
+              <span className="text-sm text-gray-700">Has Image</span>
+            </label>
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={filters.has_description}
+                onChange={(e) => handleChange('has_description', e.target.checked)}
+                className="w-4 h-4 text-ufx-primary border-gray-300 rounded focus:ring-2 focus:ring-ufx-primary"
+              />
+              <span className="text-sm text-gray-700">Has Description</span>
+            </label>
           </div>
         </div>
       </div>

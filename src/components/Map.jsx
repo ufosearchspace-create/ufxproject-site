@@ -5,6 +5,8 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
 import { getSightingsMap } from '../services/api';
+import DataLoadingModal from './DataLoadingModal';
+import ProgressBar from './ProgressBar';
 
 // Fix Leaflet default marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -28,9 +30,11 @@ const Map = ({ filters, onSightingClick }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersLayerRef = useRef(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [allSightings, setAllSightings] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
+  const [progress, setProgress] = useState({ progress: 0, loaded: 0, total: 0, message: '' });
 
   // Initialize map
   useEffect(() => {
@@ -45,8 +49,8 @@ const Map = ({ filters, onSightingClick }) => {
 
       console.log('✅ Map initialized!');
       
-      // Load data after map is ready
-      loadAllSightings();
+      // Show loading modal after map is ready
+      setShowLoadingModal(true);
     }
 
     return () => {
@@ -65,13 +69,52 @@ const Map = ({ filters, onSightingClick }) => {
     }
   }, [filters, dataLoaded]);
 
-  const loadAllSightings = async () => {
+  const handleLoadingOptionSelect = (option) => {
+    setShowLoadingModal(false);
+    loadAllSightings(option);
+  };
+
+  const loadAllSightings = async (option) => {
     setLoading(true);
     setDataLoaded(false);
+    setProgress({ progress: 0, loaded: 0, total: 0, message: 'Initializing...' });
     
     try {
-      console.log('📡 Fetching ALL sightings from API...');
-      const result = await getSightingsMap({});
+      // Build filters based on selected loading option
+      const loadingFilters = {};
+      
+      switch (option) {
+        case 'with_images':
+          loadingFilters.has_image = true;
+          setProgress({ ...progress, message: 'Loading sightings with images...' });
+          break;
+        case 'with_images_and_descriptions':
+          loadingFilters.has_image = true;
+          loadingFilters.has_description = true;
+          setProgress({ ...progress, message: 'Loading sightings with images & descriptions...' });
+          break;
+        case 'with_descriptions':
+          loadingFilters.has_description = true;
+          setProgress({ ...progress, message: 'Loading sightings with descriptions...' });
+          break;
+        case 'all':
+        default:
+          setProgress({ ...progress, message: 'Loading all sightings...' });
+          break;
+      }
+      
+      console.log('📡 Fetching sightings from API with option:', option);
+      console.log('📡 Loading filters:', loadingFilters);
+      
+      const result = await getSightingsMap(loadingFilters, (progressInfo) => {
+        setProgress({
+          progress: progressInfo.progress || 0,
+          loaded: progressInfo.loaded,
+          total: progressInfo.total,
+          message: `Loading sightings... ${progressInfo.loaded ? `(${(progressInfo.loaded / 1024 / 1024).toFixed(2)} MB)` : ''}`
+        });
+      });
+      
       console.log('✅ API Result:', result);
       
       // Handle different response structures
@@ -110,6 +153,7 @@ const Map = ({ filters, onSightingClick }) => {
       setDataLoaded(true);
     } finally {
       setLoading(false);
+      setProgress({ progress: 100, loaded: 0, total: 0, message: 'Complete!' });
     }
   };
 
@@ -245,6 +289,25 @@ if (filters.year_from || filters.year_to) {
       console.log(`📊 After duration filter (${filters.duration_min}-${filters.duration_max}):`, filtered.length);
     }
 
+    // Filter by has_image
+    if (filters.has_image) {
+      filtered = filtered.filter(s => {
+        // Check if sighting has an image
+        return s.image_url || s.image || s.images || s.has_image;
+      });
+      console.log(`📊 After has_image filter:`, filtered.length);
+    }
+
+    // Filter by has_description
+    if (filters.has_description) {
+      filtered = filtered.filter(s => {
+        // Check if sighting has a description (non-empty string)
+        const description = s.description || s.summary || s.text || '';
+        return description && String(description).trim().length > 0;
+      });
+      console.log(`📊 After has_description filter:`, filtered.length);
+    }
+
     console.log('✅ Final filtered count:', filtered.length);
     displaySightings(filtered);
   };
@@ -342,12 +405,22 @@ if (filters.year_from || filters.year_to) {
 
   return (
     <div className="relative h-full">
-      {loading && (
-        <div className="absolute top-4 right-4 bg-white px-4 py-2 rounded-lg shadow z-[1000] flex items-center space-x-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ufx-primary"></div>
-          <span className="text-sm">Loading sightings...</span>
-        </div>
+      {showLoadingModal && (
+        <DataLoadingModal
+          onSelectOption={handleLoadingOptionSelect}
+          onClose={() => setShowLoadingModal(false)}
+        />
       )}
+      
+      {loading && progress.progress !== null && (
+        <ProgressBar
+          progress={progress.progress}
+          message={progress.message}
+          loaded={progress.loaded}
+          total={progress.total}
+        />
+      )}
+      
       {!loading && dataLoaded && allSightings.length > 0 && (
         <div className="absolute top-4 left-4 bg-white px-3 py-2 rounded-lg shadow z-[1000] text-xs">
           <span className="font-semibold">{allSightings.length.toLocaleString()}</span> total sightings loaded

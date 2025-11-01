@@ -10,12 +10,12 @@ const api = axios.create({
   },
 });
 
-export const getSightingsMap = async (filters = {}) => {
+export const getSightingsMap = async (filters = {}, onProgress = null) => {
   const params = new URLSearchParams();
   
-  // Dodaj samo parametre koji imaju vrijednost
+  // Add only parameters that have a value
   Object.keys(filters).forEach(key => {
-    if (filters[key] !== '' && filters[key] !== null && filters[key] !== undefined) {
+    if (filters[key] !== '' && filters[key] !== null && filters[key] !== undefined && filters[key] !== false) {
       params.append(key, filters[key]);
     }
   });
@@ -23,7 +23,30 @@ export const getSightingsMap = async (filters = {}) => {
   console.log('🔍 Sending filters to API:', filters);
   console.log('🔗 API URL:', `/sightings/map?${params.toString()}`);
   
-  return api.get(`/sightings/map?${params.toString()}`);
+  const config = {};
+  
+  // Add progress tracking if callback is provided
+  if (onProgress && typeof onProgress === 'function') {
+    config.onDownloadProgress = (progressEvent) => {
+      if (progressEvent.lengthComputable) {
+        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        onProgress({
+          progress: percentCompleted,
+          loaded: progressEvent.loaded,
+          total: progressEvent.total
+        });
+      } else {
+        // If total is not available, just report loaded bytes
+        onProgress({
+          progress: null,
+          loaded: progressEvent.loaded,
+          total: null
+        });
+      }
+    };
+  }
+  
+  return api.get(`/sightings/map?${params.toString()}`, config);
 };
 
 export const getSightingsStats = async () => {
