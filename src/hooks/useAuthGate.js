@@ -29,9 +29,14 @@ export function useAuthGate(walletAddress) {
       setError(null);
 
       try {
+        const normalizedAddress = walletAddress.toLowerCase();
+        console.log('Checking access for wallet:', normalizedAddress);
         const response = await api.post('/api/auth/check-access', {
           walletAddress
+          address: normalizedAddress
         });
+
+        console.log('Access check response:', response);
         
         if (isMounted) {
           // Response is already the JSON object from lib/api.js
