@@ -24,7 +24,7 @@ const ProgressBar = ({ progress, message, total, loaded }) => {
       {/* Progress Info */}
       <div className="flex items-center justify-between text-xs text-gray-600">
         <span>{percentage.toFixed(0)}%</span>
-        {total && loaded !== undefined && (
+        {total != null && loaded != null && (
           <span>{loaded.toLocaleString()} / {total.toLocaleString()}</span>
         )}
       </div>

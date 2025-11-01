@@ -111,7 +111,7 @@ const Map = ({ filters, onSightingClick }) => {
           progress: progressInfo.progress || 0,
           loaded: progressInfo.loaded,
           total: progressInfo.total,
-          message: `Loading sightings... ${progressInfo.loaded ? `(${(progressInfo.loaded / 1024 / 1024).toFixed(2)} MB)` : ''}`
+          message: `Loading sightings... ${progressInfo.loaded != null ? `(${(progressInfo.loaded / 1024 / 1024).toFixed(2)} MB)` : ''}`
         });
       });
       
@@ -153,7 +153,10 @@ const Map = ({ filters, onSightingClick }) => {
       setDataLoaded(true);
     } finally {
       setLoading(false);
-      setProgress({ progress: 100, loaded: 0, total: 0, message: 'Complete!' });
+      // Keep the final progress info instead of resetting to 0
+      setTimeout(() => {
+        setProgress({ progress: 100, loaded: null, total: null, message: 'Complete!' });
+      }, 500);
     }
   };
 
